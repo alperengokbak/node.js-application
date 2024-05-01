@@ -4,10 +4,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 // Import routes
-import userRoute from "./routes/userRoute.js";
+import userRoute from "./routes/api/user.js";
+import blogRoute from "./routes/api/blog.js";
 import registerRoute from "./routes/register.js";
 import loginRoute from "./routes/login.js";
-import blogRoute from "./routes/blogRoute.js";
 import refreshTokenRoute from "./routes/refreshToken.js";
 
 // Import middleware
