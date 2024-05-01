@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const login = async (req, res) => {
+  const cookies = req.cookies;
+  console.log(`cookie available at login: ${JSON.stringify(cookies)}`);
   const { email, password } = req.body;
 
   try {
@@ -17,16 +19,34 @@ const login = async (req, res) => {
     if (!validatePassword) return res.status(400).send({ message: "Invalid password" });
 
     if (user && validatePassword) {
-      const accessToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
-        expiresIn: "1d",
-      });
-      const refreshToken = jwt.sign({ email: user.email }, process.env.JWT_REFRESH_SECRET, {
-        expiresIn: "7d",
+      const roles = Object.values(user.roles).filter(Boolean);
+      const accessToken = jwt.sign(
+        {
+          UserInfo: {
+            email: user.email,
+            roles: roles,
+          },
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "7h",
+        }
+      );
+      const newRefreshToken = jwt.sign({ email: user.email }, process.env.JWT_REFRESH_SECRET, {
+        expiresIn: "5d",
       });
 
-      await User.findOneAndUpdate({ email: user.email }, { refreshToken: refreshToken }, { new: true });
+      const newRefreshTokenArray = !cookies?.jwt
+        ? user.refreshToken
+        : user.refreshToken.filter((token) => token !== cookies.jwt);
 
-      res.cookie("jwt", refreshToken, {
+      if (cookies?.jwt) res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+
+      user.refreshToken = [...newRefreshTokenArray, newRefreshToken];
+      const result = await user.save();
+      console.log(result);
+
+      res.cookie("jwt", newRefreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "None",
@@ -41,6 +61,7 @@ const login = async (req, res) => {
           username: user.username,
           email: user.email,
           country: user.country,
+          roles: roles,
         },
         accessToken,
       });

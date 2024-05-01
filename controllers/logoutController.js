@@ -13,8 +13,9 @@ const handleLogout = async (req, res) => {
       res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
       return res.status(204).send({ message: "No content." });
     }
-    user.refreshToken = "";
-    await user.save();
+    user.refreshToken = user.refreshToken.filter((token) => token !== validateRefreshToken);
+    const result = await user.save();
+    console.log(result);
 
     res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
     return res.status(200).send({ message: "Logout successful" });
