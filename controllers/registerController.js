@@ -35,15 +35,8 @@ const register = async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = new User({
-      full_name,
-      username,
-      password: hashPassword,
-      email,
-      country,
-    });
 
-    const registeredUser = newUser.save();
+    const registeredUser = await User.create({ full_name, username, password: hashPassword, email, country });
 
     res.status(201).send({ message: "User created successfully", user: registeredUser });
   } catch (error) {
