@@ -24,7 +24,14 @@ import corsOptions from "./config/corsOptions.js";
 // Import Cookie Parser
 import cookieParser from "cookie-parser";
 
+// Import connection to MongoDB
+import "./config/databaseConnection.js";
+import connectDB from "./config/databaseConnection.js";
+
 dotenv.config();
+
+// Connect to MongoDB
+connectDB();
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -58,13 +65,9 @@ app.use("/logout", logoutRoute);
 app.use("/users", authMiddleware, userRoute);
 app.use("/blogs", authMiddleware, blogRoute);
 
-mongoose
-  .connect(mongoose_db)
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.log(error);
+await mongoose.connection.once("open", () => {
+  console.log("Connected to MongoDB");
+  app.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`);
   });
+});

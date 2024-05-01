@@ -1,4 +1,4 @@
-import whitelist from "../config/allowedOrigins";
+import whitelist from "../config/allowedOrigins.js";
 
 const credentials = (req, res, next) => {
   const origin = req.headers.origin;
