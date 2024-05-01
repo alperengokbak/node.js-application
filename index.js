@@ -65,7 +65,7 @@ app.use("/logout", logoutRoute);
 app.use("/users", authMiddleware, userRoute);
 app.use("/blogs", authMiddleware, blogRoute);
 
-await mongoose.connection.once("open", () => {
+mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
