@@ -10,7 +10,7 @@ const authMiddleware = async (req, res, next) => {
   try {
     const token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) return res.status(403).json({ status: "Invalid Token" });
+      if (err) return res.status(403).json({ status: "Invalid Token", error: err });
       req.user = decoded.email;
       next();
     });
