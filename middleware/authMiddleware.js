@@ -8,7 +8,8 @@ const authMiddleware = async (req, res, next) => {
     const token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) return res.status(403).json({ status: "Invalid Token", error: err });
-      req.user = decoded.email;
+      req.user = decoded.UserInfo.email;
+      req.roles = decoded.UserInfo.roles;
       next();
     });
   } catch (error) {

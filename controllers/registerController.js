@@ -4,7 +4,7 @@ const saltRounds = 10;
 import bcrypt from "bcrypt";
 
 const register = async (req, res) => {
-  const { full_name, username, password, email, country } = req.body;
+  const { full_name, username, password, email, country, roles } = req.body;
 
   try {
     if (!full_name || !username || !password || !email || !country) {
@@ -36,7 +36,7 @@ const register = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, saltRounds);
 
-    const registeredUser = await User.create({ full_name, username, password: hashPassword, email, country });
+    const registeredUser = await User.create({ full_name, username, password: hashPassword, email, country, roles });
 
     res.status(201).send({ message: "User created successfully", user: registeredUser });
   } catch (error) {

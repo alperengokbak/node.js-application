@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 
 const login = async (req, res) => {
   const cookies = req.cookies;
-  console.log(`cookie available at login: ${JSON.stringify(cookies)}`);
   const { email, password } = req.body;
 
   try {
@@ -43,8 +42,7 @@ const login = async (req, res) => {
       if (cookies?.jwt) res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
 
       user.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-      const result = await user.save();
-      console.log(result);
+      await user.save();
 
       res.cookie("jwt", newRefreshToken, {
         httpOnly: true,

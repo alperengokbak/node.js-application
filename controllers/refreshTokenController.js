@@ -27,10 +27,8 @@ const handleRefreshToken = async (req, res) => {
     if (user) {
       jwt.verify(validateRefreshToken, process.env.JWT_REFRESH_SECRET, async (err, decoded) => {
         if (err) {
-          console.log("Expired token");
           user.refreshToken = [...newRefreshTokenArray];
-          const result = await user.save();
-          console.log(result);
+          await user.save();
         }
         if (err || user.email !== decoded.email) return res.status(403).send({ message: "Invalid Refresh Token" });
 
@@ -53,8 +51,7 @@ const handleRefreshToken = async (req, res) => {
         });
 
         user.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-        const result = await user.save();
-        console.log(result);
+        await user.save();
 
         res.cookie("jwt", newRefreshToken, {
           httpOnly: true,
