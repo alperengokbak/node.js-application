@@ -17,10 +17,23 @@ const login = async (req, res) => {
     if (!validatePassword) return res.status(400).send({ message: "Invalid password" });
 
     if (user && validatePassword) {
-      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
+      const accessToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
+        expiresIn: "30m",
       });
-      return res.status(200).send({
+      const refreshToken = jwt.sign({ email: user.email }, process.env.JWT_REFRESH_SECRET, {
+        expiresIn: "1d",
+      });
+      const cryptedRefreshToken = await bcrypt.hash(refreshToken, 10);
+      await User.findOneAndUpdate({ email: user.email }, { refreshToken: cryptedRefreshToken }, { new: true });
+
+      res.cookie("jwt", newRefreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      res.status(200).json({
         status: "200",
         message: "Login successful",
         user: {
@@ -29,7 +42,7 @@ const login = async (req, res) => {
           email: user.email,
           country: user.country,
         },
-        token,
+        accessToken,
       });
     }
   } catch (error) {
