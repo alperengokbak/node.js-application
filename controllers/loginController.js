@@ -26,7 +26,7 @@ const login = async (req, res) => {
       const cryptedRefreshToken = await bcrypt.hash(refreshToken, 10);
       await User.findOneAndUpdate({ email: user.email }, { refreshToken: cryptedRefreshToken }, { new: true });
 
-      res.cookie("jwt", newRefreshToken, {
+      res.cookie("jwt", refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "None",
