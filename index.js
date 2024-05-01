@@ -19,6 +19,9 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import cors from "cors";
 import corsOptions from "./config/corsOptions.js";
 
+// Import Cookie Parser
+import cookieParser from "cookie-parser";
+
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -29,6 +32,9 @@ const mongoose_db = process.env.MONGODB_URI;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 //app.use(express.static(join(__dirname, "public")));
+
+// Middleware for parsing cookies
+app.use(cookieParser());
 
 // Custom middleware
 app.use(logger);

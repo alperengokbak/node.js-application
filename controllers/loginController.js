@@ -18,13 +18,13 @@ const login = async (req, res) => {
 
     if (user && validatePassword) {
       const accessToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
-        expiresIn: "30m",
+        expiresIn: "30s",
       });
       const refreshToken = jwt.sign({ email: user.email }, process.env.JWT_REFRESH_SECRET, {
         expiresIn: "1d",
       });
-      const cryptedRefreshToken = await bcrypt.hash(refreshToken, 10);
-      await User.findOneAndUpdate({ email: user.email }, { refreshToken: cryptedRefreshToken }, { new: true });
+
+      await User.findOneAndUpdate({ email: user.email }, { refreshToken: refreshToken }, { new: true });
 
       res.cookie("jwt", refreshToken, {
         httpOnly: true,
