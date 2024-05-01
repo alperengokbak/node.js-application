@@ -9,6 +9,7 @@ import blogRoute from "./routes/api/blog.js";
 import registerRoute from "./routes/register.js";
 import loginRoute from "./routes/login.js";
 import refreshTokenRoute from "./routes/refreshToken.js";
+import logoutRoute from "./routes/logout.js";
 
 // Import middleware
 import authMiddleware from "./middleware/authMiddleware.js";
@@ -49,6 +50,7 @@ app.use(errorHandler);
 app.use("/register", registerRoute);
 app.use("/login", loginRoute);
 app.use("/refresh", refreshTokenRoute);
+app.use("/logout", logoutRoute);
 app.use("/users", authMiddleware, userRoute);
 app.use("/blogs", authMiddleware, blogRoute);
 

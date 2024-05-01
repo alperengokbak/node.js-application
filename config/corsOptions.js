@@ -1,4 +1,4 @@
-const whitelist = ["https://www.google.com", "http://localhost:8080"];
+import whitelist from "./allowedOrigins.js";
 
 const corsOptions = {
   origin: function (origin, callback) {
