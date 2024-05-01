@@ -35,7 +35,7 @@ const userSchema = new Schema({
     Admin: Number,
   },
   refreshToken: {
-    type: String,
+    type: [String],
   },
 });
 
