@@ -15,6 +15,7 @@ import logoutRoute from "./routes/logout.js";
 import authMiddleware from "./middleware/authMiddleware.js";
 import { logger } from "./middleware/logEvents.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import credentials from "./middleware/credentials.js";
 
 // Import CORS module
 import cors from "cors";
@@ -39,6 +40,9 @@ app.use(cookieParser());
 
 // Custom middleware
 app.use(logger);
+
+// Credentials middleware
+app.use(credentials);
 
 // Third-party middleware --> Cross-Origin Resource Sharing (CORS)
 app.use(cors(corsOptions));
