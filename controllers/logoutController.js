@@ -13,9 +13,11 @@ const handleLogout = async (req, res) => {
       res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
       return res.status(204).send({ message: "No content." });
     }
-    await User.findOneAndDelete({ refreshToken: validateRefreshToken });
+    user.refreshToken = "";
+    await user.save();
 
     res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+    return res.status(200).send({ message: "Logout successful" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

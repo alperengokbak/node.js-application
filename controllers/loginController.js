@@ -18,10 +18,10 @@ const login = async (req, res) => {
 
     if (user && validatePassword) {
       const accessToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
-        expiresIn: "30s",
+        expiresIn: "1d",
       });
       const refreshToken = jwt.sign({ email: user.email }, process.env.JWT_REFRESH_SECRET, {
-        expiresIn: "1d",
+        expiresIn: "7d",
       });
 
       await User.findOneAndUpdate({ email: user.email }, { refreshToken: refreshToken }, { new: true });
