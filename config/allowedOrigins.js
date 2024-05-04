@@ -1,3 +1,3 @@
-const whitelist = ["https://www.google.com", "http://localhost:8080"];
+const whitelist = ["http://localhost:8080", "http://localhost:5173/"];
 
 export default whitelist;
