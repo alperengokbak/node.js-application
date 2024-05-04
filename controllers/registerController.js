@@ -19,21 +19,6 @@ const register = async (req, res) => {
     const existingUsername = await User.findOne({ username: username });
     if (existingUsername) return res.status(400).send({ message: "Username already exists" });
 
-    // Validate email and password
-    const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-
-    if (!EMAIL_REGEX.test(email)) {
-      return res.status(400).send({ message: "Invalid email address" });
-    }
-
-    if (!PASSWORD_REGEX.test(password)) {
-      return res.status(400).send({
-        message:
-          "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number",
-      });
-    }
-
     const hashPassword = await bcrypt.hash(password, saltRounds);
 
     const registeredUser = await User.create({ full_name, username, password: hashPassword, email, country, roles });
