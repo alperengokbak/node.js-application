@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
@@ -22,6 +23,10 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  city: {
+    type: String,
+    required: true,
+  },
   country: {
     type: String,
     required: true,
@@ -33,6 +38,21 @@ const userSchema = new Schema({
     },
     Editor: Number,
     Admin: Number,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  zip: {
+    type: String,
+    required: true,
   },
   refreshToken: {
     type: [String],
