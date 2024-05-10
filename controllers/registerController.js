@@ -1,13 +1,12 @@
-import e from "express";
 import User from "../models/schema.js";
 const saltRounds = 10;
 import bcrypt from "bcrypt";
 
 const register = async (req, res) => {
-  const { full_name, username, password, email, country, roles } = req.body;
+  const { full_name, username, password, email, country, roles, city, address, phone, state, zip } = req.body;
 
   try {
-    if (!full_name || !username || !password || !email || !country) {
+    if (!full_name || !username || !password || !email || !country || !roles || !city || !address || !state || !zip) {
       return res.status(400).send({ message: "Missing required information" });
     }
 
@@ -21,7 +20,19 @@ const register = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, saltRounds);
 
-    const registeredUser = await User.create({ full_name, username, password: hashPassword, email, country, roles });
+    const registeredUser = await User.create({
+      full_name,
+      username,
+      password: hashPassword,
+      email,
+      country,
+      roles,
+      city,
+      address,
+      phone,
+      state,
+      zip,
+    });
 
     res.status(201).send({ message: "User created successfully", user: registeredUser });
   } catch (error) {
