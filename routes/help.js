@@ -1,6 +1,8 @@
 import Router from "express";
-import { help } from "../controllers/helpController.js";
+import { helpDesk } from "../controllers/helpController.js";
 
 const router = Router();
 
-router.route("/").post(help);
+router.route("/").post(helpDesk);
+
+export default router;

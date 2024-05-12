@@ -1,4 +1,4 @@
-import User from "../models/schema.js";
+import { User } from "../models/schema.js";
 
 const handleLogout = async (req, res) => {
   const cookies = req.cookies;

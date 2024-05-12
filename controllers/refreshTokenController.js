@@ -1,4 +1,4 @@
-import User from "../models/schema.js";
+import { User } from "../models/schema.js";
 import jwt from "jsonwebtoken";
 
 const handleRefreshToken = async (req, res) => {

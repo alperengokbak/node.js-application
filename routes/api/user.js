@@ -6,6 +6,6 @@ import verifyRoles from "../../middleware/verifyRoles.js";
 const router = Router();
 
 router.route("/").get(getUsers);
-router.route("/:id").get(verifyRoles(ROLES_LIST.Admin), getUserById);
+router.route("/:id").get(getUserById); //verifyRoles(ROLES_LIST.Admin),
 
 export default router;

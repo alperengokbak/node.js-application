@@ -61,4 +61,12 @@ const userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 
-export default User;
+const helpSchema = new Schema({
+  full_name: { type: String, ref: "User" },
+  email: { type: String, ref: "User" },
+  message: { type: String, required: true },
+});
+
+const Help = mongoose.model("Help", helpSchema);
+
+export { User, Help };

@@ -1,4 +1,4 @@
-import User from "../models/schema.js";
+import { User } from "../models/schema.js";
 const saltRounds = 10;
 import bcrypt from "bcrypt";
 

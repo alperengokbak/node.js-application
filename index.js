@@ -10,6 +10,7 @@ import registerRoute from "./routes/register.js";
 import loginRoute from "./routes/login.js";
 import refreshTokenRoute from "./routes/refreshToken.js";
 import logoutRoute from "./routes/logout.js";
+import helpRoute from "./routes/help.js";
 
 // Import middleware
 import authMiddleware from "./middleware/authMiddleware.js";
@@ -62,7 +63,8 @@ app.use("/register", registerRoute);
 app.use("/login", loginRoute);
 app.use("/refresh", refreshTokenRoute);
 app.use("/logout", logoutRoute);
-app.use("/users", authMiddleware, userRoute);
+app.use("/help", helpRoute);
+app.use("/users", userRoute); // authMiddleware
 app.use("/blogs", authMiddleware, blogRoute);
 
 mongoose.connection.once("open", () => {
